@@ -74,6 +74,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "kbsali/redmine-api": {
+        "version": "v1.5.16"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
