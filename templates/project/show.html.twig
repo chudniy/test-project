@@ -3,14 +3,6 @@
 {% block body %}
     <h1>{{ project.name }}</h1>
 
-    {% if project.trackers %}
-        <ul>
-            {% for tracker in project.trackers %}
-                <li>{{ tracker.name  }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
     {% if project.description %}
         <p>{{ project.description }}</p>
     {% endif %}
