@@ -38,20 +38,23 @@ class ProjectController extends Controller
         $projectData = $client->project->show($projectId);
         $issuesData  = $client->issue->all(['project_id' => $projectId]);
 
-        if ($projectData) {
+        // if projectId is incorrect
+        if ( ! $projectData) {
+            $this->addFlash(
+                'error',
+                "Project wasn't founded on the server"
+            );
 
-            dump($projectData['project']);
-            dump($issuesData);
-
-            return $this->render('project/show.html.twig', array(
-                'project'     => $projectData ? $projectData['project'] : false,
-                'issues_list' => $issuesData['issues'] ?? null,
-            ));
+            return $this->redirect($this->generateUrl('project_list'));
         }
 
-        return $this->redirect($this->generateUrl('project_list', array(
-            'error'      => true,
-            'error_text' => "Project wasn't founded on the server",
-        )), 301);
+
+        dump($projectData['project']);
+        dump($issuesData);
+
+        return $this->render('project/show.html.twig', array(
+            'project'     => $projectData ? $projectData['project'] : false,
+            'issues_list' => $issuesData['issues'] ?? null,
+        ));
     }
 }
