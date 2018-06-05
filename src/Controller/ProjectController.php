@@ -1,9 +1,8 @@
 <?php
-// src/Controller/LuckyController.php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Comment;
@@ -30,8 +29,8 @@ class ProjectController extends Controller
 
             foreach ($projects as $index => $project) {
                 $comment = $this->getDoctrine()
-                                ->getRepository(Comment::class)
-                                ->findOneBy(array('project_id' => $project['id']));
+                    ->getRepository(Comment::class)
+                    ->findOneBy(array('project_id' => $project['id']));
 
                 if ($comment) {
                     $projects[$index]['comment'] = $comment->getComment();
@@ -48,6 +47,10 @@ class ProjectController extends Controller
 
     /**
      * @Route("/project/add_comment", name="add_comment")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function addComment(Request $request)
     {
@@ -57,8 +60,8 @@ class ProjectController extends Controller
         $commentText = $request->request->get('comment');
 
         $comment = $this->getDoctrine()
-                        ->getRepository(Comment::class)
-                        ->findOneBy(array('project_id' => $projectId));
+            ->getRepository(Comment::class)
+            ->findOneBy(array('project_id' => $projectId));
 
         if ($comment) {
             $comment->setComment($commentText);
@@ -84,6 +87,8 @@ class ProjectController extends Controller
      * @Route("/project/{projectId}", name="project_show")
      *
      * @param integer $projectId
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function show($projectId)
     {
@@ -93,10 +98,10 @@ class ProjectController extends Controller
         $client = new Redmine\Client($apiUrl, $apiKey);
 
         $projectData = $client->project->show($projectId);
-        $issuesData  = $client->issue->all(['project_id' => $projectId]);
+        $issuesData = $client->issue->all(['project_id' => $projectId]);
 
         // if projectId is incorrect
-        if ( ! $projectData) {
+        if (!$projectData) {
             $this->addFlash(
                 'error',
                 "The project was not found on the server"
@@ -106,12 +111,33 @@ class ProjectController extends Controller
         }
 
 
-        dump($projectData['project']);
-        dump($issuesData);
-
         return $this->render('project/show.html.twig', array(
-            'project'     => $projectData ? $projectData['project'] : false,
+            'project' => $projectData ? $projectData['project'] : false,
             'issues_list' => $issuesData['issues'] ?? false,
+        ));
+    }
+
+    /**
+     * @Route("/time/{issueId}", name="time_entries")
+     *
+     * @param integer $issueId
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function time($issueId)
+    {
+        $apiKey = $this->container->getParameter('redmine.key');
+        $apiUrl = $this->container->getParameter('redmine.url');
+
+        $client = new Redmine\Client($apiUrl, $apiKey);
+
+        $timeEntriesData = $client->time_entry->all([
+            'issue_id' => $issueId,
+        ]);
+
+        return $this->render('project/time.html.twig', array(
+            'issue_id' => $issueId,
+            'time_data' => $timeEntriesData,
         ));
     }
 

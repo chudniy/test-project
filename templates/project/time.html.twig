@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Issue #{{ issue_id }}</h1>
+
+    <h2>Time entries table</h2>
+
+    {% if time_data.time_entries is not empty %}
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Activity</th>
+            <th>Hours</th>
+            <th>Comments</th>
+            <th>Spent on</th>
+        </tr>
+        {% for time_entry in time_data.time_entries %}
+            <tr>
+                <td>{{ time_entry.user.name }}</td>
+                <td>{{ time_entry.activity.name }}</td>
+                <td>{{ time_entry.hours }}</td>
+                <td>
+                    {% if time_entry.comments is defined %}
+                        {{ time_entry.comments }}
+                    {% endif %}
+                </td>
+                <td>{{ time_entry.spent_on }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No time entries yet</p>
+    {% endif %}
+{% endblock %}
+
+

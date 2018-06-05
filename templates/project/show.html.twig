@@ -20,6 +20,7 @@
             <th>Priority</th>
             <th>Author</th>
             <th>Start Date</th>
+            <th>Time</th>
         </tr>
         {% for issue in issues_list %}
             <tr>
@@ -31,6 +32,7 @@
                 <td>{{ issue.priority.name }}</td>
                 <td>{{ issue.author.name }}</td>
                 <td>{{ issue.start_date }}</td>
+                <td><a href="{{ path('time_entries', {'issueId': issue.id}) }}">Details</a></td>
             </tr>
         {% endfor %}
     </table>
