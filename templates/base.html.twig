@@ -10,7 +10,7 @@
 <div class="container">
     {% for label, messages in app.flashes %}
         {% for message in messages %}
-            <div class="flash-{{ label }}">
+            <div class="flash-{{ label }} alert {% if label == 'error' %} alert-danger {% else %} alert-info {% endif %}">
                 {{ message }}
             </div>
         {% endfor %}

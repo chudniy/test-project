@@ -17,11 +17,15 @@
             <tbody>
             {% for project in project_array %}
                 <tr>
-                    <td><a href="{{ path('project_show', {'projectId': project.id}) }}">{{ project.name }}</a></td>
-                    <td><input type="text" class="comment-text form-control" title="" value="{{ project.comment }}">
+                    <td width="200">
+                        <a href="{{ path('project_show', {'projectId': project.id}) }}">{{ project.name }}</a>
                     </td>
-                    <td><input type="button" class="save-comment btn btn-success" data-project-id="{{ project.id }}"
-                               value="Save"></td>
+                    <td>
+                        <input type="text" class="comment-text form-control" title="" value="{{ project.comment }}">
+                    </td>
+                    <td align="center" width="100">
+                        <input type="button" class="save-comment btn btn-success" data-project-id="{{ project.id }}" value="Save">
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

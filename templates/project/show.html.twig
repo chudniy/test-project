@@ -27,15 +27,15 @@
         <tbody>
             {% for issue in issues_list %}
                 <tr>
-                    <td>{{ issue.id }}</td>
-                    <td>{{ issue.subject }}</td>
+                    <td align="center" width="50">{{ issue.id }}</td>
+                    <td width="150">{{ issue.subject }}</td>
                     <td>{{ issue.description }}</td>
                     <td align="center" width="50">{{ issue.status.name }}</td>
                     <td align="center" width="50">{{ issue.tracker.name }}</td>
                     <td align="center" width="50">{{ issue.priority.name }}</td>
-                    <td align="center" width="50">{{ issue.author.name }}</td>
+                    <td align="center" width="100">{{ issue.author.name }}</td>
                     <td align="center" width="100">{{ issue.start_date }}</td>
-                    <td><a href="{{ path('time_entries', {'issueId': issue.id}) }}" class="btn btn-info">Details</a></td>
+                    <td align="center" width="100"><a href="{{ path('time_entries', {'issueId': issue.id}) }}" class="btn btn-info">Details</a></td>
                 </tr>
             {% endfor %}
         </tbody>

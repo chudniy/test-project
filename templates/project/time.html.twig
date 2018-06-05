@@ -1,9 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div id="message"></div>
+
     <h1 class="text-center">Issue #{{ issue_id }}</h1>
 
-    <h2 class="text-center">Time entries table</h2>
+    <br>
+
+    <div class="text-center">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">
+            Add time item
+        </button>
+    </div>
 
     {% if time_data.time_entries is not empty %}
         <table class="table table-striped">
@@ -14,6 +23,7 @@
                 <th>Hours</th>
                 <th>Comments</th>
                 <th>Spent on</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -28,13 +38,56 @@
                         {% endif %}
                     </td>
                     <td width="100">{{ time_entry.spent_on }}</td>
+                    <td width="80"><input type="button" class="delete-time btn btn-danger"
+                                           data-time-id="{{ time_entry.id }}"
+                                           value="Delete"></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p class="text-center">No time entries yet</p>
+        <p class="text-center">No time items yet</p>
     {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" action="{{ path('time_add') }}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add time item</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="issue_id" value="{{ issue_id }}">
+                        <div class="form-group">
+                            <label for="input-select-activity">User</label>
+                            <select id="input-select-activity" class="form-control" name="activity" required>
+                                <option value="" selected disabled>-select-</option>
+                                <option value="8">Design</option>
+                                <option value="9">Development</option>
+                                <option value="10">Management</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-hours">Hours</label>
+                            <input id="input-hours" type="number" class="form-control" name="hours" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-comment">Comment</label>
+                            <textarea id="input-comment" class="form-control" name="comment" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Add time item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 
