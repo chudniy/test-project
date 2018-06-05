@@ -1,4 +1,7 @@
+require('../css/global.scss');
+require('bootstrap-sass');
 require('../css/app.css');
+
 
 // loads the jquery package from node_modules
 var $ = require('jquery');
@@ -16,7 +19,7 @@ $(document).ready(function () {
                 project_id: project_id
             },
             success: function(data){
-                $('#message').html( data.message );
+                $('#message').html( '<div class="alert alert-success" role="alert">' + data.message + '</div>');
             }
         })
     })

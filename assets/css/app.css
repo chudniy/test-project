@@ -1,0 +1,7 @@
+body {
+    padding-top: 50px;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}

@@ -1,43 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ project.name }}</h1>
+    <h1 class="text-center">{{ project.name }}</h1>
 
     {% if project.description %}
-        <p>{{ project.description }}</p>
+        <p class="text-center">{{ project.description }}</p>
     {% endif %}
 
-    <h2>Issues table</h2>
+    <h2 class="text-center">Issues table</h2>
 
     {% if issues_list %}
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Subject</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Trackers</th>
-            <th>Priority</th>
-            <th>Author</th>
-            <th>Start Date</th>
-            <th>Time</th>
-        </tr>
-        {% for issue in issues_list %}
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>{{ issue.id }}</td>
-                <td>{{ issue.subject }}</td>
-                <td>{{ issue.description }}</td>
-                <td>{{ issue.status.name }}</td>
-                <td>{{ issue.tracker.name }}</td>
-                <td>{{ issue.priority.name }}</td>
-                <td>{{ issue.author.name }}</td>
-                <td>{{ issue.start_date }}</td>
-                <td><a href="{{ path('time_entries', {'issueId': issue.id}) }}">Details</a></td>
+                <th>Id</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Trackers</th>
+                <th>Priority</th>
+                <th>Author</th>
+                <th>Start Date</th>
+                <th>Time</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for issue in issues_list %}
+                <tr>
+                    <td>{{ issue.id }}</td>
+                    <td>{{ issue.subject }}</td>
+                    <td>{{ issue.description }}</td>
+                    <td align="center" width="50">{{ issue.status.name }}</td>
+                    <td align="center" width="50">{{ issue.tracker.name }}</td>
+                    <td align="center" width="50">{{ issue.priority.name }}</td>
+                    <td align="center" width="50">{{ issue.author.name }}</td>
+                    <td align="center" width="100">{{ issue.start_date }}</td>
+                    <td><a href="{{ path('time_entries', {'issueId': issue.id}) }}" class="btn btn-info">Details</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     {% else %}
-        <p>No issues yet</p>
+        <p class="text-center">No issues yet</p>
     {% endif %}
 {% endblock %}
 

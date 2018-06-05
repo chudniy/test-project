@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash-{{ label }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Test project{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
         {% endfor %}
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-        <script src="{{ asset('build/app.js') }}"></script>
-    </body>
+    {% endfor %}
+    {% block body %}{% endblock %}
+</div>
+{% block javascripts %}{% endblock %}
+<script src="{{ asset('build/app.js') }}"></script>
+</body>
 </html>

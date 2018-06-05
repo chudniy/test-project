@@ -22,11 +22,13 @@ Encore
     // show OS notifications when builds finish/fail
     .enableBuildNotifications()
 
-// create hashed filenames (e.g. app.abc123.css)
-// .enableVersioning()
+    // create hashed filenames (e.g. app.abc123.css)
+    // .enableVersioning()
 
-// allow sass/scss files to be processed
-// .enableSassLoader()
+    // allow sass/scss files to be processed
+    .enableSassLoader(function(sassOptions) {}, {
+         resolveUrlLoader: false
+    })
 ;
 
 // export the final configuration

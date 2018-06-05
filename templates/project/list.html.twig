@@ -1,27 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>List of projects</h1>
+    <h1 class="text-center">List of projects</h1>
 
     <div id="message"></div>
 
     {% if project_array %}
-        <table>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Project name</th>
                 <th>Comment</th>
                 <th></th>
             </tr>
+            </thead>
+            <tbody>
             {% for project in project_array %}
                 <tr>
                     <td><a href="{{ path('project_show', {'projectId': project.id}) }}">{{ project.name }}</a></td>
-                    <td><input type="text" class="comment-text" title="" value="{{ project.comment }}"></td>
-                    <td><input type="button" class="save-comment" data-project-id="{{ project.id }}" value="Save"></td>
+                    <td><input type="text" class="comment-text form-control" title="" value="{{ project.comment }}">
+                    </td>
+                    <td><input type="button" class="save-comment btn btn-success" data-project-id="{{ project.id }}"
+                               value="Save"></td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     {% else %}
-        <p>The project list is empty</p>
+        <p class="text-center">The project list is empty</p>
     {% endif %}
 
 {% endblock %}
