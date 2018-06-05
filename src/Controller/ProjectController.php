@@ -80,7 +80,6 @@ class ProjectController extends Controller
         $entityManager->flush();
 
         return $this->json(array('message' => 'Comment was added'));
-
     }
 
     /**
@@ -118,6 +117,72 @@ class ProjectController extends Controller
     }
 
     /**
+     * @Route("/time/add", name="time_add")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
+     */
+    public function addTime(Request $request)
+    {
+        $apiKey = $this->container->getParameter('redmine.key');
+        $apiUrl = $this->container->getParameter('redmine.url');
+
+        $client = new Redmine\Client($apiUrl, $apiKey);
+
+        $issue_id = $request->request->get('issue_id');
+        $hours = $request->request->get('hours');
+        $activity = $request->request->get('activity');
+        $comment = $request->request->get('comment') ? $request->request->get('comment') : '';
+
+        if ($issue_id && $hours && $activity) {
+            $client->time_entry->create([
+                'issue_id' => $issue_id,
+                'hours' => $hours,
+                'activity_id' => $activity,
+                'comments' => $comment,
+            ]);
+
+            $this->addFlash(
+                'notice',
+                "The time item was added to this task"
+            );
+        } else {
+            $this->addFlash(
+                'error',
+                "Something went wrong!"
+            );
+        }
+
+        return $this->redirect($this->generateUrl('time_entries', array('issueId' => $issue_id)));
+    }
+
+    /**
+     * @Route("/time/delete", name="delete_time")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function deleteTime(Request $request)
+    {
+        $timeEntryId = $request->request->get('time_id');
+
+        $apiKey = $this->container->getParameter('redmine.key');
+        $apiUrl = $this->container->getParameter('redmine.url');
+
+        $client = new Redmine\Client($apiUrl, $apiKey);
+
+        if ($timeEntryId){
+            $client->time_entry->remove($timeEntryId);
+        }
+
+        return $this->json(array('message' => 'Time entry was deleted'));
+    }
+
+    /**
      * @Route("/time/{issueId}", name="time_entries")
      *
      * @param integer $issueId
@@ -137,8 +202,8 @@ class ProjectController extends Controller
 
         return $this->render('project/time.html.twig', array(
             'issue_id' => $issueId,
+            'user_id' => 20,
             'time_data' => $timeEntriesData,
         ));
     }
-
 }
