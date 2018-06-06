@@ -6,21 +6,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Comment;
-use Redmine;
+use App\Service\RedmineClient;
 
 class ProjectController extends Controller
 {
     /**
      * @Route("/", name="project_list")
+     *
+     * @param RedmineClient $redmineClient
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function list()
+    public function list(RedmineClient $redmineClient)
     {
         $projects = array();
 
-        $apiKey = $this->container->getParameter('redmine.key');
-        $apiUrl = $this->container->getParameter('redmine.url');
-
-        $client = new Redmine\Client($apiUrl, $apiKey);
+        $client = $redmineClient->getClient();
 
         $projectsData = $client->project->all();
 
@@ -86,15 +87,13 @@ class ProjectController extends Controller
      * @Route("/project/{projectId}", name="project_show")
      *
      * @param integer $projectId
+     * @param RedmineClient $redmineClient
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function show($projectId)
+    public function show($projectId, RedmineClient $redmineClient)
     {
-        $apiKey = $this->container->getParameter('redmine.key');
-        $apiUrl = $this->container->getParameter('redmine.url');
-
-        $client = new Redmine\Client($apiUrl, $apiKey);
+        $client = $redmineClient->getClient();
 
         $projectData = $client->project->show($projectId);
         $issuesData = $client->issue->all(['project_id' => $projectId]);
@@ -120,17 +119,15 @@ class ProjectController extends Controller
      * @Route("/time/add", name="time_add")
      *
      * @param Request $request
+     * @param RedmineClient $redmineClient
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
-    public function addTime(Request $request)
+    public function addTime(Request $request, RedmineClient $redmineClient)
     {
-        $apiKey = $this->container->getParameter('redmine.key');
-        $apiUrl = $this->container->getParameter('redmine.url');
-
-        $client = new Redmine\Client($apiUrl, $apiKey);
+        $client = $redmineClient->getClient();
 
         $issue_id = $request->request->get('issue_id');
         $hours = $request->request->get('hours');
@@ -163,17 +160,15 @@ class ProjectController extends Controller
      * @Route("/time/delete", name="delete_time")
      *
      * @param Request $request
+     * @param RedmineClient $redmineClient
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function deleteTime(Request $request)
+    public function deleteTime(Request $request, RedmineClient $redmineClient)
     {
         $timeEntryId = $request->request->get('time_id');
 
-        $apiKey = $this->container->getParameter('redmine.key');
-        $apiUrl = $this->container->getParameter('redmine.url');
-
-        $client = new Redmine\Client($apiUrl, $apiKey);
+        $client = $redmineClient->getClient();
 
         if ($timeEntryId){
             $client->time_entry->remove($timeEntryId);
@@ -186,15 +181,13 @@ class ProjectController extends Controller
      * @Route("/time/{issueId}", name="time_entries")
      *
      * @param integer $issueId
+     * @param RedmineClient $redmineClient
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function time($issueId)
+    public function time($issueId, RedmineClient $redmineClient)
     {
-        $apiKey = $this->container->getParameter('redmine.key');
-        $apiUrl = $this->container->getParameter('redmine.url');
-
-        $client = new Redmine\Client($apiUrl, $apiKey);
+        $client = $redmineClient->getClient();
 
         $timeEntriesData = $client->time_entry->all([
             'issue_id' => $issueId,

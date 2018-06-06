@@ -28,3 +28,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\RedmineClient:
+        arguments:
+          $apiKey: '%redmine.key%'
+          $apiUrl: '%redmine.url%'
