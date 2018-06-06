@@ -2,6 +2,10 @@ body {
     padding-top: 50px;
 }
 
+.red-star{
+    color: red;
+}
+
 .table > tbody > tr > td {
     vertical-align: middle;
 }

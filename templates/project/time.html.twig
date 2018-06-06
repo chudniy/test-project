@@ -62,7 +62,7 @@
                     <div class="modal-body">
                         <input type="hidden" name="issue_id" value="{{ issue_id }}">
                         <div class="form-group">
-                            <label for="input-select-activity">User</label>
+                            <label for="input-select-activity">Activity<span class="red-star"> *</span></label>
                             <select id="input-select-activity" class="form-control" name="activity" required>
                                 <option value="" selected disabled>-select-</option>
                                 <option value="8">Design</option>
@@ -71,7 +71,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="input-hours">Hours</label>
+                            <label for="input-hours">Hours<span class="red-star"> *</span></label>
                             <input id="input-hours" type="number" class="form-control" name="hours" required>
                         </div>
                         <div class="form-group">
